@@ -1,4 +1,5 @@
-# Django settings for yapster project.
+import os
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -11,12 +12,16 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
+        # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.mysql',
+        # Or path to database file if using sqlite3.
+        'NAME': 'yapster',
         # The following settings are not used with sqlite3:
-        'USER': '',
+        'USER': 'root',
         'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        # Empty for localhost through domain sockets or '127.0.0.1' for
+        # localhost through TCP.
+        'HOST': '',
         'PORT': '',                      # Set to empty string for default.
     }
 }
@@ -79,7 +84,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -89,7 +94,7 @@ SECRET_KEY = 'qvj3ann!1=(^&xwislsmhpif&7y2xoule22e&d-#eirspucziz'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    #     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -108,20 +113,25 @@ ROOT_URLCONF = 'yapster.urls'
 WSGI_APPLICATION = 'yapster.wsgi.application'
 
 TEMPLATE_DIRS = (
+    os.path.join(ROOT_DIR, 'templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
 
 INSTALLED_APPS = (
+    'provider',
+    'provider.oauth2',
+    'registration',
+    'rest_framework',
+    'yap',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -156,3 +166,16 @@ LOGGING = {
         },
     }
 }
+
+
+# auth settings
+AUTHENTICATION_BACKENDS = ('registration.backends.default.EmailAuthBackend',)
+ACCOUNT_ACTIVATION_DAYS = 7
+
+
+# mail settings
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'test.yapster@gmail.com'
+EMAIL_HOST_PASSWORD = "gkfls;kfdl'p"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
