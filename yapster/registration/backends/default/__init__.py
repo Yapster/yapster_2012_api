@@ -19,18 +19,6 @@ class EmailAuthBackend(object):
         except User.DoesNotExist:
             return None
 
-    def has_module_perms(self, user_obj, app_label):
-        """
-        Returns True if user_obj has any permissions in the given app_label.
-        """
-        for perm in self.get_all_permissions(user_obj):
-            if perm[:perm.index('.')] == app_label:
-                return True
-        return False
-
-    def has_perm(self, user_obj, perm, obj=None):
-        return perm in self.get_all_permissions(user_obj, obj)
-
     def get_user(self, user_id):
         """ Get a User object from the user_id. """
         try:
