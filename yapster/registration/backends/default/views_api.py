@@ -32,7 +32,6 @@ class PostAPIView(generics.CreateAPIView):
             data=request.DATA, files=request.FILES)
 
         if serializer.is_valid():
-            print serializer.data
             result = self.action(request, **serializer.data)
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED,

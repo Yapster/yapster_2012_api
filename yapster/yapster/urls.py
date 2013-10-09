@@ -6,6 +6,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^api/accounts/', include('registration.backends.default.urls_api')),
+    url(r'^api/yap/', include('yap.urls_api')),
     url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),
     # url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
     # Examples:
