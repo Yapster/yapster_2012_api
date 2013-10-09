@@ -120,6 +120,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'yapster',
     'provider',
     'provider.oauth2',
     'registration',
@@ -169,7 +170,8 @@ LOGGING = {
 
 
 # auth settings
-AUTHENTICATION_BACKENDS = ('registration.backends.default.EmailAuthBackend',)
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', 
+    'registration.backends.default.EmailAuthBackend',)
 ACCOUNT_ACTIVATION_DAYS = 7
 
 
