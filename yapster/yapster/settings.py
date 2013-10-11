@@ -21,7 +21,7 @@ DATABASES = {
         'PASSWORD': '123456',
         # Empty for localhost through domain sockets or '127.0.0.1' for
         # localhost through TCP.
-        'HOST': 'localhost1',
+        'HOST': '10.212.182.245',
         'PORT': '',                      # Set to empty string for default.
     }
 }
@@ -181,3 +181,9 @@ EMAIL_HOST_USER = 'test.yapster@gmail.com'
 EMAIL_HOST_PASSWORD = "gkfls;kfdl'p"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+
+try:
+    from settings_local import *
+except ImportError:
+    pass
