@@ -168,7 +168,6 @@ LOGGING = {
     }
 }
 
-
 # auth settings
 AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', 
     'registration.backends.default.EmailAuthBackend',)

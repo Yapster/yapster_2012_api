@@ -24,6 +24,7 @@ class CreateYap(CreateAPIView):
 
         if serializer.is_valid():
             serializer.save()
+            y.add_tags(serializer.data.get('tagstr'))
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED,
                             headers=headers)

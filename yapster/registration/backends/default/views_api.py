@@ -15,7 +15,7 @@ from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import serializers
 from rest_framework import status
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication, OAuth2Authentication
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from yapster.models import UserInfo

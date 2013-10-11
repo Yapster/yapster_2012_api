@@ -25,3 +25,10 @@ class Yap(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     # yapster_latitude = models.FloatField(blank=True, null=True)
     # yapster_longitude = models.FloatField(blank=True, null=True)
+
+    def add_tags(self, tag_str):
+        tags = tag_str.split(',')
+        for tag in tags:
+            t = Tag.objects.get_or_create(tagname=tag)
+            self.tags.add(t[0])
+        # self.save()

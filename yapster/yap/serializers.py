@@ -4,7 +4,8 @@ from yap.models import Yap
 
 
 class YapsSerializer(serializers.ModelSerializer):
-
+    tagstr = serializers.CharField()
+    
     class Meta:
         model = Yap
-        fields = ('path', 'tags', 'length')
+        fields = ('path', 'length', 'tagstr')
