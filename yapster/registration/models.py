@@ -82,7 +82,9 @@ class RegistrationManager(models.Manager):
         
         """
         new_user = User.objects.create_user(username, email, password)
-        new_user.is_active = False
+        new_user.is_active = True
+        # todo 
+        # in_active_user is for email validation
         new_user.save()
 
         registration_profile = self.create_profile(new_user)

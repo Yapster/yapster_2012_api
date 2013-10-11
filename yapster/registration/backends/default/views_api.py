@@ -40,16 +40,16 @@ class PostAPIView(generics.CreateAPIView):
 
 
 class RegistrationSerializer(serializers.Serializer):
-    username = serializers.CharField(read_only=True)
+    username = serializers.CharField(required=True)
     email = serializers.CharField(required=True)
-    password1 = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
+    password1 = serializers.CharField(read_only=True)
     password2 = serializers.CharField(read_only=True)
 
     def validate(self, attrs):
         # Hashes collide, so they are not "100% unique", period.
-        attrs['username'] = hashlib.md5(
-            attrs['email']).digest().encode('base64')[:-1]
-        attrs['password2'] = attrs['password1']
+        attrs['password1'] = attrs['password']
+        attrs['password2'] = attrs['password']
         return attrs
 
     def validate_email(self, attrs, source):
