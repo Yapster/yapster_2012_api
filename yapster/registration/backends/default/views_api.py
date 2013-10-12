@@ -34,7 +34,8 @@ class PostAPIView(generics.CreateAPIView):
         if serializer.is_valid():
             result = self.action(request, **serializer.data)
             headers = self.get_success_headers(serializer.data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED,
+            return Response({'success': True, 'message': None},
+                            status=status.HTTP_201_CREATED,
                             headers=headers)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
