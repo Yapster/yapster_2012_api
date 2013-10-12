@@ -10,7 +10,7 @@ from yap.serializers import YapsSerializer
 
 
 class CreateYap(CreateAPIView):
-    authentication_classes = (SessionAuthentication, BasicAuthentication)
+    authentication_classes = (SessionAuthentication, BasicAuthentication, OAuth2Authentication)
     permission_classes = (IsAuthenticated,)
 
     serializer_class = YapsSerializer
@@ -18,12 +18,13 @@ class CreateYap(CreateAPIView):
     def create(self, request, *args, **kwargs):
         y = Yap()
         y.user = request.user
-
+        
         serializer = self.get_serializer(
             data=request.DATA, files=request.FILES, instance=y)
 
         if serializer.is_valid():
             serializer.save()
+            # add tags
             y.add_tags(serializer.data.get('tagstr'))
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED,

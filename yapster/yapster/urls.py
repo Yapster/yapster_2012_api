@@ -6,11 +6,10 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^api/\.1/accounts/', include('registration.backends.default.urls_api')),
     url(r'^api/\.1/yap/', include('yap.urls_api')),
-    url(r'^api/\.1/auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
     
-    url(r'^accounts/', include('registration.backends.default.urls')),
-    # url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
-    # Examples:
+    url(r'^accounts/', include('registration.backends.default.urls')),    # Examples:
     # url(r'^$', 'yapster.views.home', name='home'),
     # url(r'^yapster/', include('yapster.foo.urls')),
 

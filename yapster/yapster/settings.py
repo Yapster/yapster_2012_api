@@ -121,8 +121,8 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
     'yapster',
-    # 'provider',
-    # 'provider.oauth2',
+    'provider',
+    'provider.oauth2',
     'registration',
     'rest_framework',
     'yap',
