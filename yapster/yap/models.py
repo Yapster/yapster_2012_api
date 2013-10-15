@@ -9,6 +9,9 @@ from django.contrib.auth.models import User
 class Tag(models.Model):
     tagname = models.CharField(max_length=30, null=False)
 
+    def __unicode__(self):
+        return self.tagname
+
 
 class Yap(models.Model):
     user = models.ForeignKey(User, related_name='yaps')
@@ -18,17 +21,59 @@ class Yap(models.Model):
     length = models.IntegerField(default=0)
     active_flag = models.BooleanField(default=True)
 
-    listen_count = models.IntegerField(default=0)
-    re_yap_count = models.IntegerField(default=0)
-    like_count = models.IntegerField(default=0)
+    listening_count = models.IntegerField(default=0)
+    reyapping_count = models.IntegerField(default=0)
+    liking_count = models.IntegerField(default=0)
 
-    created_time = models.DateTimeField(auto_now_add=True)
-    # yapster_latitude = models.FloatField(blank=True, null=True)
-    # yapster_longitude = models.FloatField(blank=True, null=True)
+    dateline = models.DateTimeField(auto_now_add=True)
 
     def add_tags(self, tag_str):
         tags = tag_str.split(',')
         for tag in tags:
             t = Tag.objects.get_or_create(tagname=tag)
             self.tags.add(t[0])
-        # self.save()
+
+    def delete(self):
+        self.active_flag = False
+        self.save()
+
+    def add_listening(self, user):
+        obj = Listening()
+        obj.yap = self
+        obj.listening_user = user
+        self.listening_count += 1
+        self.save()
+        return obj
+
+    def add_reyapping(self, user):
+        obj = ReYapping()
+        obj.yap = self
+        obj.reyapping_user = user
+        self.reyapping_count += 1
+        self.save()
+        return obj
+
+    def add_liking(self, user):
+        obj = Liking.objects.get_or_create(yap=self, liking_user=user)
+        if obj[1]:
+            self.liking_count += 1
+            self.save()
+        return obj
+
+
+class Listening(models.Model):
+    yap = models.ForeignKey(Yap, related_name='listening')
+    listening_user = models.ForeignKey(User, related_name='listening')
+    dateline = models.DateTimeField(auto_now_add=True)
+
+
+class ReYapping(models.Model):
+    yap = models.ForeignKey(Yap, related_name='reyapping')
+    reyapping_user = models.ForeignKey(User, related_name='reyapping')
+    dateline = models.DateTimeField(auto_now_add=True)
+
+
+class Liking(models.Model):
+    yap = models.ForeignKey(Yap, related_name='liking')
+    liking_user = models.ForeignKey(User, related_name='liking')
+    dateline = models.DateTimeField(auto_now_add=True)

@@ -2,11 +2,12 @@
 from django.conf.urls import patterns, url
 
 from rest_framework.urlpatterns import format_suffix_patterns
-from yap.views_api import CreateYap
+from yap.views_api import CreateYap, Yap
 
 
 urlpatterns = patterns('',
                        url(r'^create/$', CreateYap.as_view()),
+                       url(r'^(?P<pk>[0-9]+)/$', Yap.as_view()),
                        )
 
 urlpatterns = format_suffix_patterns(urlpatterns)
