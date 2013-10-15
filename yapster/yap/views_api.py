@@ -50,12 +50,14 @@ class Yap(RetrieveUpdateDestroyAPIView):
         obj.user = self.request.user
 
 
-@api_view(['POST', ])
+@api_view(['POST', 'GET'])
 def listening(request, pk):
     try:
         yap = YapModel.objects.get(pk=pk)
         yap.add_listening(request.user)
-        
+        return Response({'success': True}, status=status.HTTP_201_CREATED)
+    except YapModel.DoesNotExist:
+        return Response({'detail': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['POST', ])
