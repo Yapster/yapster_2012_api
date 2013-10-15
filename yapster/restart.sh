@@ -17,6 +17,6 @@ if [ -f $PIDFILE ]; then
     rm -f -- $PIDFILE
 fi
 
-uwsgi --plugins python --processes 2 --max-requests 10000 --master --pythonpath $PRODIR\
+uwsgi --processes 2 --max-requests 10000 --master --pythonpath $PRODIR\
       --chdir $PRODIR --daemonize $LOGFILE --module $MODULE --socket $SOCKFILE --pidfile $PIDFILE
 
