@@ -6,9 +6,9 @@ PRODIR=$(pwd)
 PRONAME=$(basename $PRODIR)
 
 
-LOGFILE="$PRODIR/log/uwsgi.log"
-PIDFILE="/tmp/yapster..pid"
-SOCKFILE="/tmp/yapster.sock"
+LOGFILE="/var/log/uwsgi.yapster.log"
+PIDFILE="/tmp/yapster.uwsgi.pid"
+SOCKFILE="/tmp/yapster.uwsgi.sock"
 
 MODULE="$PRONAME.wsgi:application"
 
@@ -18,5 +18,5 @@ if [ -f $PIDFILE ]; then
 fi
 
 uwsgi --processes 2 --max-requests 10000 --master --pythonpath $PRODIR\
-      --chdir $PRODIR --daemonize $LOGFILE --module $MODULE --socket $SOCKFILE --pidfile $PIDFILE
+      --chdir $PRODIR --daemonize $LOGFILE --module $MODULE --socket $SOCKFILE --pidfile $PIDFILE\
       --chmod-socket=666
