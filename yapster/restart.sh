@@ -6,9 +6,9 @@ PRODIR=$(pwd)
 PRONAME=$(basename $PRODIR)
 
 
-PIDFILE="$PRODIR/run/uwsgi.pid"
-LOGFILE="$PRODIR/log/uwsgi.log"
-SOCKFILE="$PRODIR/run/uwsgi.sock"
+PIDFILE="/var/run/yapster.pid"
+SOCKFILE="/var/run/yapster.sock"
+LOGFILE="/var/log/uwsgi.yapster.log"
 
 MODULE="$PRONAME.wsgi:application"
 
