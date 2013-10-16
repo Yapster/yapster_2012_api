@@ -1,5 +1,7 @@
 #!/bin/bash
-######The following is not needed changed#################
+# description: Yapster uwsgi 
+# processname: yapster
+
 PRODIR="/home/ec2-user/yapster_api/yapster"
 PRONAME="yapster"
 PIDFILE="/var/run/yapster.pid"
