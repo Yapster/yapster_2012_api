@@ -1,6 +1,10 @@
 #!/bin/bash
+# Basic support for IRIX style chkconfig
+###
+# chkconfig: 2345 95 20
 # description: Yapster uwsgi 
 # processname: yapster
+###
 
 PRODIR="/home/ec2-user/yapster_api/yapster"
 PRONAME="yapster"
