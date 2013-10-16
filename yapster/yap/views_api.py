@@ -60,11 +60,11 @@ def listening(request, pk):
         return Response({'detail': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(['POST', ])
+@api_view(['POST', 'GET'])
 def reyapping(request, pk):
     pass
 
 
-@api_view(['POST', ])
+@api_view(['POST', 'GET'])
 def liking(request, pk):
     pass
