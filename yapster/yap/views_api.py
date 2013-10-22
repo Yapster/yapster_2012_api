@@ -111,3 +111,31 @@ class Liking(RetrieveDestroyAPIView):
 
     queryset = LikingModel.objects.filter(active_flag=True)
     serializer_class = LikingSerializer
+
+@api_view(['POST', 'GET'])
+def listener_request(request, pk):
+    authentication_classes = (
+        SessionAuthentication, BasicAuthentication, OAuth2Authentication)
+    permission_classes = (IsAuthenticated,)
+
+    if request.method == 'POST':
+        listener = request.user
+        listened = User.objects.get(pk=pk)
+        l = ListenerRequest.objects.get_or_create(listener=listener, listened=listened)
+        if l[1]:
+            return Response({'sucess': True}, status=status.HTTP_201_CREATED)
+        else:
+            #l[0] is True
+            return Response({'detail':'Already Exist'}, status=status.HTTP_501_NOT_IMPLEMENTED)
+
+    if request.method == 'GET':
+        #get listener
+        try:
+            user = User.objects.get(pk=pk)
+            listeners = ListenerRequest.objects.filter(listened=user)
+            listener_id = []
+            for listener in listeners:
+                listener_id.append(listener.listener_id)
+            return Response(listener_id)
+        except User.DoesNotExist:
+            return Response({'detail': 'User Not Found'}, status=status.HTTP_404_NOT_FOUND)

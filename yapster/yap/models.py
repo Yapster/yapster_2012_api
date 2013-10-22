@@ -49,7 +49,7 @@ class Yap(models.Model):
         obj = Listening.objects.get(pk=pk)
         obj.delete()
         return True
-        
+
     def add_reyapping(self, user):
         obj = ReYapping()
         obj.yap = self
@@ -91,4 +91,9 @@ class ReYapping(models.Model):
 class Liking(models.Model):
     yap = models.ForeignKey(Yap, related_name='liking')
     liking_user = models.ForeignKey(User, related_name='liking')
+    dateline = models.DateTimeField(auto_now_add=True)
+
+class ListenerRequest(models.Model):
+    listener = models.ForeignKey(User,related_name='listener')
+    listened = models.ForeignKey(User,related_name='listened')
     dateline = models.DateTimeField(auto_now_add=True)
