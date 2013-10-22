@@ -10,8 +10,14 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework.authentication import OAuth2Authentication
 
 from yap.models import Yap as YapModel
+from yap.models import ListeningModel
+from yap.models import ReYappingModel
+from yap.models import LikingModel
 from yap.serializers import CreateYapSerializer
 from yap.serializers import YapSerializer
+from yap.serializers import ListeningSerializer
+from yap.serializers import ReYappingSerializer
+from yap.serializers import LikingSerializer
 
 
 class CreateYap(CreateAPIView):
@@ -51,7 +57,7 @@ class Yap(RetrieveUpdateDestroyAPIView):
 
 
 @api_view(['POST', 'GET'])
-def listening(request, pk):
+def add_listening(request, pk):
     try:
         yap = YapModel.objects.get(pk=pk)
         yap.add_listening(request.user)
@@ -60,11 +66,48 @@ def listening(request, pk):
         return Response({'detail': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(['POST', 'GET'])
-def reyapping(request, pk):
-    pass
+class Listening(RetrieveDestroyAPIView):
+    authentication_classes = (
+        SessionAuthentication, BasicAuthentication, OAuth2Authentication)
+    permission_classes = (IsAuthenticated,)
+
+    queryset = ListeningModel.objects.filter(active_flag=True)
+    serializer_class = ListeningSerializer
 
 
 @api_view(['POST', 'GET'])
-def liking(request, pk):
-    pass
+def add_reyapping(request, pk):
+    try:
+        yap = YapModel.objects.get(pk=pk)
+        yap.add_reyapping(request.user)
+        return Response({'success': True}, status=status.HTTP_201_CREATED)
+    except YapModel.DoesNotExist:
+        return Response({'detail': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class ReYapping(RetrieveDestroyAPIView):
+    authentication_classes = (
+        SessionAuthentication, BasicAuthentication, OAuth2Authentication)
+    permission_classes = (IsAuthenticated,)
+
+    queryset = ReYappingModel.objects.filter(active_flag=True)
+    serializer_class = ReYappingSerializer
+
+
+@api_view(['POST', 'GET'])
+def add_liking(request, pk):
+    try:
+        yap = YapModel.objects.get(pk=pk)
+        yap.add_liking(request.user)
+        return Response({'success': True}, status=status.HTTP_201_CREATED)
+    except YapModel.DoesNotExist:
+        return Response({'detail': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class Liking(RetrieveDestroyAPIView):
+    authentication_classes = (
+        SessionAuthentication, BasicAuthentication, OAuth2Authentication)
+    permission_classes = (IsAuthenticated,)
+
+    queryset = LikingModel.objects.filter(active_flag=True)
+    serializer_class = LikingSerializer

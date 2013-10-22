@@ -45,6 +45,11 @@ class Yap(models.Model):
         self.save()
         return obj
 
+    def remove_listening(self, pk):
+        obj = Listening.objects.get(pk=pk)
+        obj.delete()
+        return True
+        
     def add_reyapping(self, user):
         obj = ReYapping()
         obj.yap = self
@@ -53,12 +58,22 @@ class Yap(models.Model):
         self.save()
         return obj
 
+    def remove_reyapping(self, pk):
+        obj = ReYapping.objects.get(pk=pk)
+        obj.delete()
+        return True
+
     def add_liking(self, user):
         obj = Liking.objects.get_or_create(yap=self, liking_user=user)
         if obj[1]:
             self.liking_count += 1
             self.save()
         return obj
+
+    def remove_liking(self, pk):
+        obj = Liking.objects.get(pk=pk)
+        obj.delete()
+        return True
 
 
 class Listening(models.Model):

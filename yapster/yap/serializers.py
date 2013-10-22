@@ -19,3 +19,19 @@ class YapSerializer(serializers.ModelSerializer):
     class Meta:
         model = Yap
         exclude = ('user', )
+
+
+class ListeningSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Listening
+
+class ReYappingSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ReYapping
+
+class LikingSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Liking
