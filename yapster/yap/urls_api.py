@@ -20,6 +20,7 @@ urlpatterns = patterns('yap.views_api',
                            ReYapping.as_view()),
                        url(r'^liking/(?P<pk>[0-9]+)/$',
                            Liking.as_view()),
+                       url(r'^listener/(?P<pk>\d+)/$', 'listener_request')
                        )
 
 urlpatterns = format_suffix_patterns(urlpatterns)
