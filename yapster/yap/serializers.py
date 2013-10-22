@@ -1,6 +1,9 @@
 # coding:utf8
 from rest_framework import serializers
 from yap.models import Yap
+from yap.models import Listening
+from yap.models import ReYapping
+from yap.models import Liking
 
 
 class CreateYapSerializer(serializers.ModelSerializer):

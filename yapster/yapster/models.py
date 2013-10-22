@@ -11,5 +11,3 @@ class UserInfo(models.Model):
     email = models.EmailField(_('email address'), blank=True)
     handle = models.CharField(_('handle'), max_length=50, null=False)
     phone = models.CharField(_('phone'), max_length=20, blank=True)
-
-

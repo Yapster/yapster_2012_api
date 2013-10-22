@@ -5,14 +5,15 @@ from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import CreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.generics import RetrieveDestroyAPIView
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.authentication import OAuth2Authentication
 
 from yap.models import Yap as YapModel
-from yap.models import ListeningModel
-from yap.models import ReYappingModel
-from yap.models import LikingModel
+from yap.models import Listening as ListeningModel 
+from yap.models import ReYapping as ReYappingModel
+from yap.models import Liking as LikingModel
 from yap.serializers import CreateYapSerializer
 from yap.serializers import YapSerializer
 from yap.serializers import ListeningSerializer
@@ -71,7 +72,7 @@ class Listening(RetrieveDestroyAPIView):
         SessionAuthentication, BasicAuthentication, OAuth2Authentication)
     permission_classes = (IsAuthenticated,)
 
-    queryset = ListeningModel.objects.filter(active_flag=True)
+    queryset = ListeningModel.objects.filter()
     serializer_class = ListeningSerializer
 
 
@@ -90,7 +91,7 @@ class ReYapping(RetrieveDestroyAPIView):
         SessionAuthentication, BasicAuthentication, OAuth2Authentication)
     permission_classes = (IsAuthenticated,)
 
-    queryset = ReYappingModel.objects.filter(active_flag=True)
+    queryset = ReYappingModel.objects.filter()
     serializer_class = ReYappingSerializer
 
 
@@ -109,5 +110,5 @@ class Liking(RetrieveDestroyAPIView):
         SessionAuthentication, BasicAuthentication, OAuth2Authentication)
     permission_classes = (IsAuthenticated,)
 
-    queryset = LikingModel.objects.filter(active_flag=True)
+    queryset = LikingModel.objects.filter()
     serializer_class = LikingSerializer
