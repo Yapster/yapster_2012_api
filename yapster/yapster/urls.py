@@ -4,6 +4,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
+    url(r'^$', 'yapster.views.index'),
     url(r'^api/\.1/accounts/', include('registration.backends.default.urls_api')),
     url(r'^api/\.1/yap/', include('yap.urls_api')),
     url(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),

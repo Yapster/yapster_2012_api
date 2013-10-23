@@ -7,11 +7,11 @@ from yap.models import Liking
 
 
 class CreateYapSerializer(serializers.ModelSerializer):
-    tagstr = serializers.CharField()
+    tagstr = serializers.CharField(required=False)
 
     class Meta:
         model = Yap
-        fields = ('path', 'length', 'tagstr')
+        fields = ('title', 'path', 'length', 'tagstr')
 
 
 class YapSerializer(serializers.ModelSerializer):

@@ -15,6 +15,7 @@ class Tag(models.Model):
 
 class Yap(models.Model):
     user = models.ForeignKey(User, related_name='yaps')
+    title = models.CharField(max_length=50, null=False, verbose_name='title')
     path = models.CharField(
         max_length=255, null=False, verbose_name='audio path')
     tags = models.ManyToManyField(Tag, blank=True)
@@ -37,12 +38,29 @@ class Yap(models.Model):
         self.active_flag = False
         self.save()
 
-    def add_listening(self, user):
+    def listenedby(self, user):
         obj = Listening()
         obj.yap = self
         obj.listening_user = user
+        obj.save()
         self.listening_count += 1
         self.save()
+        return obj
+
+    def reyapedby(self, user):
+        obj = ReYapping()
+        obj.yap = self
+        obj.reyapping_user = user
+        obj.save()
+        self.reyapping_count += 1
+        self.save()
+        return obj
+
+    def likedby(self, user):
+        obj = Liking.objects.get_or_create(yap=self, liking_user=user)
+        if obj[1]:
+            self.liking_count += 1
+            self.save()
         return obj
 
     def remove_listening(self, pk):
@@ -50,25 +68,10 @@ class Yap(models.Model):
         obj.delete()
         return True
 
-    def add_reyapping(self, user):
-        obj = ReYapping()
-        obj.yap = self
-        obj.reyapping_user = user
-        self.reyapping_count += 1
-        self.save()
-        return obj
-
     def remove_reyapping(self, pk):
         obj = ReYapping.objects.get(pk=pk)
         obj.delete()
         return True
-
-    def add_liking(self, user):
-        obj = Liking.objects.get_or_create(yap=self, liking_user=user)
-        if obj[1]:
-            self.liking_count += 1
-            self.save()
-        return obj
 
     def remove_liking(self, pk):
         obj = Liking.objects.get(pk=pk)
@@ -93,7 +96,8 @@ class Liking(models.Model):
     liking_user = models.ForeignKey(User, related_name='liking')
     dateline = models.DateTimeField(auto_now_add=True)
 
+
 class ListenerRequest(models.Model):
-    listener = models.ForeignKey(User,related_name='listener')
-    listened = models.ForeignKey(User,related_name='listened')
+    listener = models.ForeignKey(User, related_name='listener')
+    listened = models.ForeignKey(User, related_name='listened')
     dateline = models.DateTimeField(auto_now_add=True)

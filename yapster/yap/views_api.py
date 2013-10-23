@@ -29,6 +29,7 @@ class CreateYap(CreateAPIView):
     serializer_class = CreateYapSerializer
 
     def create(self, request, *args, **kwargs):
+
         y = YapModel()
         y.user = request.user
 
@@ -57,11 +58,11 @@ class Yap(RetrieveUpdateDestroyAPIView):
         obj.user = self.request.user
 
 
-@api_view(['POST', 'GET'])
-def add_listening(request, pk):
+@api_view(['POST'])
+def listen(request, pk):
     try:
         yap = YapModel.objects.get(pk=pk)
-        yap.add_listening(request.user)
+        yap.listenedby(request.user)
         return Response({'success': True}, status=status.HTTP_201_CREATED)
     except YapModel.DoesNotExist:
         return Response({'detail': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -76,11 +77,11 @@ class Listening(RetrieveDestroyAPIView):
     serializer_class = ListeningSerializer
 
 
-@api_view(['POST', 'GET'])
-def add_reyapping(request, pk):
+@api_view(['POST'])
+def reyap(request, pk):
     try:
         yap = YapModel.objects.get(pk=pk)
-        yap.add_reyapping(request.user)
+        yap.reyapedby(request.user)
         return Response({'success': True}, status=status.HTTP_201_CREATED)
     except YapModel.DoesNotExist:
         return Response({'detail': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
@@ -95,11 +96,11 @@ class ReYapping(RetrieveDestroyAPIView):
     serializer_class = ReYappingSerializer
 
 
-@api_view(['POST', 'GET'])
-def add_liking(request, pk):
+@api_view(['POST'])
+def like(request, pk):
     try:
         yap = YapModel.objects.get(pk=pk)
-        yap.add_liking(request.user)
+        yap.likedby(request.user)
         return Response({'success': True}, status=status.HTTP_201_CREATED)
     except YapModel.DoesNotExist:
         return Response({'detail': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
