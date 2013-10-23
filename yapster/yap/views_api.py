@@ -11,6 +11,7 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework.authentication import OAuth2Authentication
 
 from yap.models import Yap as YapModel
+from yap.models import Friendship
 from yap.models import Listening as ListeningModel
 from yap.models import ReYapping as ReYappingModel
 from yap.models import Liking as LikingModel
@@ -115,32 +116,59 @@ class Liking(RetrieveDestroyAPIView):
     queryset = LikingModel.objects.filter()
     serializer_class = LikingSerializer
 
-
-@api_view(['POST', 'GET'])
-def listener_request(request, pk):
-    authentication_classes = (
-        SessionAuthentication, BasicAuthentication, OAuth2Authentication)
-    permission_classes = (IsAuthenticated,)
-
-    if request.method == 'POST':
-        listener = request.user
-        listened = User.objects.get(pk=pk)
-        l = ListenerRequest.objects.get_or_create(
-            listener=listener, listened=listened)
-        if l[1]:
+@api_view(['POST'])
+def friendships_create(request, followed_id):
+    try:
+        follower = request.user
+        obj = Friendship()
+        result = obj.create_friendship(follower, followed_id)
+        if result:
             return Response({'sucess': True}, status=status.HTTP_201_CREATED)
         else:
             #l[0] is True
-            return Response({'detail': 'Already Exist'}, status=status.HTTP_501_NOT_IMPLEMENTED)
+            return Response({'detail':'Already Exist'}, status=status.HTTP_501_NOT_IMPLEMENTED)
+    except User.DoesNotExist:
+        return Response({'detail': 'Users Not Found'}, status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
-        # get listener
-        try:
-            user = User.objects.get(pk=pk)
-            listeners = ListenerRequest.objects.filter(listened=user)
-            listener_id = []
-            for listener in listeners:
-                listener_id.append(listener.listener_id)
-            return Response(listener_id)
-        except User.DoesNotExist:
-            return Response({'detail': 'User Not Found'}, status=status.HTTP_404_NOT_FOUND)
+@api_view(['GET'])
+def follower_list(request, followed_id):
+    try:
+        obj = Friendship()
+        result = obj.follower_list(followed_id)
+        return Response(result)
+    except (Friendship.DoesNotExist, User.DoesNotExist):
+        return Response({'detail': 'Users Not Found'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+def destroy_friendship(request, followed_id):
+    '''
+    remove the friendship tith the user who you don't want to follow
+    '''
+    try:
+        follower = request.user
+        obj = Friendship()
+        result = obj.destroy_friendship(follower, followed_id)
+        if result:
+            return Response({'sucess': True}, status=status.HTTP_200_OK)
+        else:
+            return Response({'detail': 'Failed'}, status=status.HTTP_304_NOT_MODIFIED)
+
+    except (Friendship.DoesNotExist, User.DoesNotExist):
+        return Response({'detail': 'Users Not Found'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+def destroy_follower(request,follower_id):
+    '''
+    remove the follower who you don't want him to follow you
+    '''
+    try:
+        followed = request.user
+        obj = Friendship()
+        result = obj.destroy_follower(followed, follower_id)
+        if result:
+            return Response({'sucess': True}, status=status.HTTP_200_OK)
+        else:
+            return Response({'detail': 'Failed'}, status=status.HTTP_304_NOT_MODIFIED)
+
+    except (Friendship.DoesNotExist, User.DoesNotExist):
+        return Response({'detail': 'Users Not Found'}, status=status.HTTP_404_NOT_FOUND)
