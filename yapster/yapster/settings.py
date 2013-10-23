@@ -169,7 +169,7 @@ LOGGING = {
 }
 
 # auth settings
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', 
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
     'registration.backends.default.EmailAuthBackend',)
 ACCOUNT_ACTIVATION_DAYS = 7
 
