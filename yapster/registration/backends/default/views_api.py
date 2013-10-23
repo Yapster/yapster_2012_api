@@ -20,6 +20,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 
 from yapster.models import UserInfo
+from yapster.models import UserSetting
 
 
 class PostAPIView(generics.CreateAPIView):
@@ -68,10 +69,23 @@ class RegistrationSerializer(serializers.Serializer):
 class RegistrationView(PostAPIView):
     serializer_class = RegistrationSerializer
 
-    def action(self, request, **cleaned_data):
-        _n = NormalRegistrationView()
-        return _n.register(request, **cleaned_data)
+    def init_user(self, user):
+        u = UserInfo()
+        u.user = new_user
+        u.email = new_user.email
+        u.save()
 
+        u = UserSetting()
+        u.user = new_user
+        u.save()
+        return True
+
+    def action(self, request, **cleaned_data):
+        new_user = _n.register(request, **cleaned_data)
+        if self.init_user(new_user):
+            return new_user
+        else:
+            return None
 
 class ActivationSerializer(serializers.Serializer):
     activation_key = serializers.CharField(required=True)
@@ -83,30 +97,3 @@ class ActivationView(PostAPIView):
     def action(self, request, activation_key):
         _n = NormalActivationView()
         return _n.activate(request, activation_key)
-
-
-class UserInfoSerializer(serializers.Serializer):
-    handle = serializers.CharField(required=True)
-    phone = serializers.CharField(required=False)
-    first_name = serializers.CharField(required=False)
-    last_name = serializers.CharField(required=False)
-
-
-class UserInfoView(PostAPIView):
-    authentication_classes = (SessionAuthentication, BasicAuthentication)
-    permission_classes = (IsAuthenticated,)
-    serializer_class = UserInfoSerializer
-
-    def action(self, request, **cleaned_data):
-        u = UserInfo()
-        u.user = request.user
-        u.handle = cleaned_data['handle']
-        u.phone = cleaned_data['phone']
-        u.first_name = cleaned_data['first_name']
-        u.last_name = cleaned_data['last_name']
-        u.email = u.user.email
-        u.user.first_name = cleaned_data['first_name']
-        u.user.last_name = cleaned_data['last_name']
-        u.user.save()
-        u.save()
-        return u

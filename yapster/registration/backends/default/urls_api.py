@@ -24,7 +24,6 @@ from django.views.generic.base import TemplateView
 
 from registration.backends.default.views_api import ActivationView
 from registration.backends.default.views_api import RegistrationView
-from registration.backends.default.views_api import UserInfoView
 
 
 urlpatterns = patterns('',
@@ -34,7 +33,4 @@ urlpatterns = patterns('',
                        url(r'^register/$',
                            RegistrationView.as_view(),
                            name='api_registration_register'),
-                       url(r'^userinfo/$',
-                           UserInfoView.as_view(),
-                           name='api_registration_userinfo'),
                        )

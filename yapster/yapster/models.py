@@ -9,12 +9,13 @@ class UserInfo(models.Model):
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
     email = models.EmailField(_('email address'), blank=True)
-    handle = models.CharField(_('handle'), max_length=50, null=False)
     phone = models.CharField(_('phone'), max_length=20, blank=True)
 
 
-class UserSetting(models.Model):    
+class UserSetting(models.Model):
     user = models.OneToOneField(User, verbose_name='auth_user')
 
-    need_permission_to_listen  = models.BooleanField(default=False)
-    need_permission_to_message = models.BooleanField(default=False)
+    need_permission_to_listen = models.BooleanField(
+        default=False, verbose_name='need permission to listen')
+    need_permission_to_message = models.BooleanField(
+        default=False,  verbose_name='need permission to msg')
