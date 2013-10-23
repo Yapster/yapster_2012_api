@@ -11,7 +11,7 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework.authentication import OAuth2Authentication
 
 from yap.models import Yap as YapModel
-from yap.models import Listening as ListeningModel 
+from yap.models import Listening as ListeningModel
 from yap.models import ReYapping as ReYappingModel
 from yap.models import Liking as LikingModel
 from yap.serializers import CreateYapSerializer
@@ -41,8 +41,9 @@ class CreateYap(CreateAPIView):
             # add tags
             y.add_tags(serializer.data.get('tagstr'))
             headers = self.get_success_headers(serializer.data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED,
-                            headers=headers)
+            return Response(
+                {'success': True, 'content': {'yap_id': y.id}}, status=status.HTTP_201_CREATED,
+                headers=headers)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -114,6 +115,7 @@ class Liking(RetrieveDestroyAPIView):
     queryset = LikingModel.objects.filter()
     serializer_class = LikingSerializer
 
+
 @api_view(['POST', 'GET'])
 def listener_request(request, pk):
     authentication_classes = (
@@ -123,15 +125,16 @@ def listener_request(request, pk):
     if request.method == 'POST':
         listener = request.user
         listened = User.objects.get(pk=pk)
-        l = ListenerRequest.objects.get_or_create(listener=listener, listened=listened)
+        l = ListenerRequest.objects.get_or_create(
+            listener=listener, listened=listened)
         if l[1]:
             return Response({'sucess': True}, status=status.HTTP_201_CREATED)
         else:
             #l[0] is True
-            return Response({'detail':'Already Exist'}, status=status.HTTP_501_NOT_IMPLEMENTED)
+            return Response({'detail': 'Already Exist'}, status=status.HTTP_501_NOT_IMPLEMENTED)
 
     if request.method == 'GET':
-        #get listener
+        # get listener
         try:
             user = User.objects.get(pk=pk)
             listeners = ListenerRequest.objects.filter(listened=user)
