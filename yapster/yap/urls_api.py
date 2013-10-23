@@ -20,7 +20,6 @@ urlpatterns = patterns('yap.views_api',
                        #     ReYapping.as_view()),
                        # url(r'^(?P<pk>[0-9]+)/liking/$',
                        #     Liking.as_view()),
-                       url(r'^listener/(?P<pk>\d+)/$', 'listener_request')
                        url(r'^friendships/create/(?P<followed_id>\d+)/$', 'friendships_create'),
                        url(r'^friendships/followers/list/(?P<followed_id>\d+)/$', 'follower_list'),
                        url(r'^friendships/destroy/(?P<followed_id>\d+)/$','destroy_friendship'),
