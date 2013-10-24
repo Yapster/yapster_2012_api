@@ -12,7 +12,6 @@ from rest_framework.authentication import OAuth2Authentication
 
 from yapster import _j
 from yap.models import Yap as YapModel
-from yap.models import Friendship
 from yap.models import Listening as ListeningModel
 from yap.models import ReYapping as ReYappingModel
 from yap.models import Liking as LikingModel
@@ -114,6 +113,7 @@ def unlike(request, pk):
     except YapModel.DoesNotExist:
         return Response(_j(message='Not found'), status=status.HTTP_404_NOT_FOUND)
 
+<<<<<<< HEAD
 # class Listening(RetrieveDestroyAPIView):
 #     authentication_classes = (
 #         SessionAuthentication, BasicAuthentication, OAuth2Authentication)
@@ -195,3 +195,7 @@ def destroy_follower(request, follower_id):
 
     except (Friendship.DoesNotExist, User.DoesNotExist):
         return Response({'detail': 'Users Not Found'}, status=status.HTTP_404_NOT_FOUND)
+=======
+    queryset = LikingModel.objects.filter()
+    serializer_class = LikingSerializer
+>>>>>>> a21664ad589b4d155f046d0f7c0478f12d3896ae

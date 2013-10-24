@@ -169,6 +169,7 @@ LOGGING = {
 }
 
 # auth settings
+<<<<<<< HEAD
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
@@ -177,6 +178,9 @@ REST_FRAMEWORK = {
     )
 }
 AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', 
+=======
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
+>>>>>>> a21664ad589b4d155f046d0f7c0478f12d3896ae
     'registration.backends.default.EmailAuthBackend',)
 ACCOUNT_ACTIVATION_DAYS = 7
 

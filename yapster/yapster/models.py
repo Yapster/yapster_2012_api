@@ -19,3 +19,46 @@ class UserSetting(models.Model):
         default=False, verbose_name='need permission to listen')
     need_permission_to_message = models.BooleanField(
         default=False,  verbose_name='need permission to msg')
+
+class Friendship(models.Model):
+    followed = models.ForeignKey(User,related_name='friendship_followed')
+    follower = models.ForeignKey(User,related_name='firendship_follower')
+    dateline = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+    active_dateline = models.DateTimeField(blank=True, null=True)
+
+    @classmethod
+    def create_friendship(cls, follower, followed_id):
+        followed = User.objects.get(pk=followed_id)
+        obj = cls.objects.get_or_create(followed=followed, follower=follower)
+        user_setting = UserSetting.objects.get(user=followed)
+        if obj[1] and user_setting.need_permission_to_listen:
+            obj[0].is_active = False
+            obj[0].save()
+        else:
+            pass
+        return obj[1]
+
+    @classmethod
+    def follower_list(cls, followed_id):
+        objs = cls.objects.filter(followed=followed_id)
+
+        #temporary test
+        followers_id=[]
+        for obj in objs:
+            followers_id.append(obj.follower_id)
+        return followers_id
+
+    @classmethod
+    def destroy_friendship(cls, follower, followed_id):
+        followed = User.objects.get(pk=followed_id)
+        obj = cls.objects.get(followed=followed, follower=follower)
+        obj.delete()
+        return True
+
+    @classmethod
+    def destroy_follower(cls, followed, follower_id):
+        follower = User.objects.get(pk=follower_id)
+        obj = cls.objects.get(followed=followed, follower=follower)
+        obj.delete()
+        return True

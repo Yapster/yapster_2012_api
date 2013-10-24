@@ -97,7 +97,6 @@ class Like(models.Model):
     is_active = models.BooleanField(default=True)
     dateline = models.DateTimeField(auto_now_add=True)
 
-
 class Friendship(models.Model):
     followed = models.ForeignKey(User, related_name='friendship_followed')
     follower = models.ForeignKey(User, related_name='firendship_follower')
