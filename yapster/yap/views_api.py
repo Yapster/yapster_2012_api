@@ -10,6 +10,7 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.authentication import OAuth2Authentication
 
+from yapster import _j
 from yap.models import Yap as YapModel
 from yap.models import Listening as ListeningModel
 from yap.models import ReYapping as ReYappingModel
@@ -42,9 +43,12 @@ class CreateYap(CreateAPIView):
             y.add_tags(serializer.data.get('tagstr'))
             headers = self.get_success_headers(serializer.data)
             return Response(
-                {'success': True, 'content': {'yap_id': y.id}}, status=status.HTTP_201_CREATED,
+                _j(content={'yap_id': y.id}),
+                status=status.HTTP_201_CREATED,
                 headers=headers)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            _j(success=False, content=serializer.errors),
+            status=status.HTTP_400_BAD_REQUEST)
 
 
 class Yap(RetrieveUpdateDestroyAPIView):
@@ -64,9 +68,9 @@ def listen(request, pk):
     try:
         yap = YapModel.objects.get(pk=pk)
         yap.listenedby(request.user)
-        return Response({'success': True}, status=status.HTTP_201_CREATED)
+        return Response(_j(), status=status.HTTP_201_CREATED)
     except YapModel.DoesNotExist:
-        return Response({'detail': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(_j(message='Not found'), status=status.HTTP_404_NOT_FOUND)
 
 
 class Listening(RetrieveDestroyAPIView):
@@ -83,9 +87,9 @@ def reyap(request, pk):
     try:
         yap = YapModel.objects.get(pk=pk)
         yap.reyapedby(request.user)
-        return Response({'success': True}, status=status.HTTP_201_CREATED)
+        return Response(_j(), status=status.HTTP_201_CREATED)
     except YapModel.DoesNotExist:
-        return Response({'detail': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(_j(message='Not found'), status=status.HTTP_404_NOT_FOUND)
 
 
 class ReYapping(RetrieveDestroyAPIView):
@@ -102,9 +106,9 @@ def like(request, pk):
     try:
         yap = YapModel.objects.get(pk=pk)
         yap.likedby(request.user)
-        return Response({'success': True}, status=status.HTTP_201_CREATED)
+        return Response(_j(), status=status.HTTP_201_CREATED)
     except YapModel.DoesNotExist:
-        return Response({'detail': 'Not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(_j(message='Not found'), status=status.HTTP_404_NOT_FOUND)
 
 
 class Liking(RetrieveDestroyAPIView):
@@ -114,4 +118,3 @@ class Liking(RetrieveDestroyAPIView):
 
     queryset = LikingModel.objects.filter()
     serializer_class = LikingSerializer
-
