@@ -22,9 +22,9 @@ class Yap(models.Model):
     length = models.IntegerField(default=0)
     active_flag = models.BooleanField(default=True)
 
-    listening_count = models.IntegerField(default=0)
-    reyapping_count = models.IntegerField(default=0)
-    liking_count = models.IntegerField(default=0)
+    listen_count = models.IntegerField(default=0)
+    reyap_count = models.IntegerField(default=0)
+    like_count = models.IntegerField(default=0)
 
     dateline = models.DateTimeField(auto_now_add=True)
 
@@ -39,67 +39,68 @@ class Yap(models.Model):
         self.save()
 
     def listenedby(self, user):
-        obj = Listening()
+        obj = Listen()
         obj.yap = self
-        obj.listening_user = user
+        obj.listen_user = user
         obj.save()
-        self.listening_count += 1
+        self.listen_count += 1
         self.save()
         return obj
 
     def reyapedby(self, user):
-        obj = ReYapping()
+        obj = ReYap()
         obj.yap = self
-        obj.reyapping_user = user
+        obj.reyap_user = user
         obj.save()
-        self.reyapping_count += 1
+        self.reyap_count += 1
+        self.save()
+        return obj
+
+    def unreyapedby(self, user):
+        obj = ReYap.objects.get(yap=self, reyapping_user=user)
+        obj.delete()
+        self.reyap_count -= 1
         self.save()
         return obj
 
     def likedby(self, user):
-        obj = Liking.objects.get_or_create(yap=self, liking_user=user)
+        obj = Like.objects.get_or_create(yap=self, liking_user=user)
         if obj[1]:
-            self.liking_count += 1
+            self.like_count += 1
             self.save()
         return obj
 
-    def remove_listening(self, pk):
-        obj = Listening.objects.get(pk=pk)
+    def unlikedby(self, user):
+        obj = Like.objects.get(yap=self, liking_user=user)
         obj.delete()
-        return True
-
-    def remove_reyapping(self, pk):
-        obj = ReYapping.objects.get(pk=pk)
-        obj.delete()
-        return True
-
-    def remove_liking(self, pk):
-        obj = Liking.objects.get(pk=pk)
-        obj.delete()
+        self.like_count -= 1
+        self.save()
         return True
 
 
-class Listening(models.Model):
+class Listen(models.Model):
     yap = models.ForeignKey(Yap, related_name='listening')
-    listening_user = models.ForeignKey(User, related_name='listening')
+    listen_user = models.ForeignKey(User, related_name='listening')
     dateline = models.DateTimeField(auto_now_add=True)
 
 
-class ReYapping(models.Model):
+class Reyap(models.Model):
     yap = models.ForeignKey(Yap, related_name='reyapping')
-    reyapping_user = models.ForeignKey(User, related_name='reyapping')
+    reyap_user = models.ForeignKey(User, related_name='reyapping')
+    is_active = models.BooleanField(default=True)
     dateline = models.DateTimeField(auto_now_add=True)
 
 
-class Liking(models.Model):
+class Like(models.Model):
     yap = models.ForeignKey(Yap, related_name='liking')
-    liking_user = models.ForeignKey(User, related_name='liking')
+    like_user = models.ForeignKey(User, related_name='liking')
+    is_active = models.BooleanField(default=True)
     dateline = models.DateTimeField(auto_now_add=True)
 
 
 class Friendship(models.Model):
-    followed = models.ForeignKey(User,related_name='friendship_followed')
-    follower = models.ForeignKey(User,related_name='firendship_follower')
+    followed = models.ForeignKey(User, related_name='friendship_followed')
+    follower = models.ForeignKey(User, related_name='firendship_follower')
     dateline = models.DateTimeField(auto_now_add=True)
 
     @classmethod
@@ -107,12 +108,13 @@ class Friendship(models.Model):
         followed = User.objects.get(pk=followed_id)
         obj = cls.objects.get_or_create(followed=followed, follower=follower)
         return obj[1]
+
     @classmethod
     def follower_list(cls, followed_id):
         objs = cls.objects.filter(followed=followed_id)
 
-        #temporary test
-        followers_id=[]
+        # temporary test
+        followers_id = []
         for obj in objs:
             followers_id.append(obj.follower_id)
         return followers_id

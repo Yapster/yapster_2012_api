@@ -14,4 +14,4 @@ urlpatterns = patterns('yapster.views_api',
                        url(r'^usersetting/(?P<pk>[0-9]+)/$', UserSetting.as_view()),
 )
 
-urlpatterns = format_suffix_patterns(urlpatterns)
+# urlpatterns = format_suffix_patterns(urlpatterns)
