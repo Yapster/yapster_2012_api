@@ -1,7 +1,6 @@
 # coding:utf8
 from rest_framework import status
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.authentication import SessionAuthentication
@@ -9,6 +8,7 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework.authentication import OAuth2Authentication
 from rest_framework.permissions import IsAuthenticated
 
+from yaspster import Response
 from yapster.models import UserInfo as UserInfoModel
 from yapster.models import UserSetting as UserSettingModel
 from yapster.models import Friendship

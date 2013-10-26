@@ -5,17 +5,16 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', 'yapster.views.index'),
+    # temp: api from nowhere
     url(r'^api/\.1/', include('yapster.urls_api')),
+    # api for accounts
     url(r'^api/\.1/accounts/', include('registration.backends.default.urls_api')),
+    # api for yap
     url(r'^api/\.1/yap/', include('yap.urls_api')),
+    # temp: login and logout in rest_frameworks
     url(r'^auth/', include('rest_framework.urls', namespace='rest_framework')),
+    # oauth2 for client. (ios app)
     url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
-    
-    url(r'^accounts/', include('registration.backends.default.urls')),    # Examples:
-    # url(r'^$', 'yapster.views.home', name='home'),
-    # url(r'^yapster/', include('yapster.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    # url(r'^accounts/', include('registration.backends.default.urls')), 
     url(r'^admin/', include(admin.site.urls)),
 )

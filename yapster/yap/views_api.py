@@ -10,7 +10,7 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.authentication import OAuth2Authentication
 
-from yapster import _j
+from yapster import Response
 from yap.models import Yap as YapModel
 from yap.models import Listening as ListeningModel
 from yap.models import ReYapping as ReYappingModel
@@ -42,8 +42,7 @@ class CreateYap(CreateAPIView):
             # add tags
             y.add_tags(serializer.data.get('tagstr'))
             headers = self.get_success_headers(serializer.data)
-            return Response(
-                _j(content={'yap_id': y.id}),
+            return Response(content={'yap_id': y.id},
                 status=status.HTTP_201_CREATED,
                 headers=headers)
         return Response(
@@ -56,7 +55,7 @@ class Yap(RetrieveUpdateDestroyAPIView):
         SessionAuthentication, BasicAuthentication, OAuth2Authentication)
     permission_classes = (IsAuthenticated,)
 
-    queryset = YapModel.objects.filter(active_flag=True)
+    queryset = YapModel.objects.filter(is_active=True)
     serializer_class = YapSerializer
 
     def pre_save(self, obj):

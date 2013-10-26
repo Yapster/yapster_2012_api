@@ -20,7 +20,7 @@ class Yap(models.Model):
         max_length=255, null=False, verbose_name='audio path')
     tags = models.ManyToManyField(Tag, blank=True)
     length = models.IntegerField(default=0)
-    active_flag = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
 
     listen_count = models.IntegerField(default=0)
     reyap_count = models.IntegerField(default=0)
@@ -35,7 +35,7 @@ class Yap(models.Model):
             self.tags.add(t[0])
 
     def delete(self):
-        self.active_flag = False
+        self.is_active = False
         self.save()
 
     def listenedby(self, user):
@@ -48,30 +48,32 @@ class Yap(models.Model):
         return obj
 
     def reyapedby(self, user):
-        obj = ReYap()
-        obj.yap = self
-        obj.reyap_user = user
-        obj.save()
+        obj = ReYap.objects.get_or_create(yap=self, reyap_user=user)
+        if not obj[1]:
+            obj[0].is_active = True
+            obj[0].save()
         self.reyap_count += 1
         self.save()
         return obj
 
     def unreyapedby(self, user):
-        obj = ReYap.objects.get(yap=self, reyapping_user=user)
+        obj = ReYap.objects.get(yap=self, reyap_user=user)
         obj.delete()
         self.reyap_count -= 1
         self.save()
         return obj
 
     def likedby(self, user):
-        obj = Like.objects.get_or_create(yap=self, liking_user=user)
-        if obj[1]:
-            self.like_count += 1
-            self.save()
+        obj = Like.objects.get_or_create(yap=self, like_user=user)
+        if not obj[1]:
+            obj[0].is_active = True
+            obj[0].save()
+        self.like_count += 1
+        self.save()
         return obj
 
     def unlikedby(self, user):
-        obj = Like.objects.get(yap=self, liking_user=user)
+        obj = Like.objects.get(yap=self, like_user=user)
         obj.delete()
         self.like_count -= 1
         self.save()
@@ -90,12 +92,30 @@ class Reyap(models.Model):
     is_active = models.BooleanField(default=True)
     dateline = models.DateTimeField(auto_now_add=True)
 
+    def delete(self):
+        self.is_active = False
+        self.save()
+
 
 class Like(models.Model):
     yap = models.ForeignKey(Yap, related_name='liking')
     like_user = models.ForeignKey(User, related_name='liking')
     is_active = models.BooleanField(default=True)
     dateline = models.DateTimeField(auto_now_add=True)
+
+    def delete(self):
+        self.is_active = False
+        self.save()
+
+
+
+class FriendshipManager(models.Manager):
+    def create():
+        pass
+
+    def destroy():
+        pass
+        
 
 class Friendship(models.Model):
     followed = models.ForeignKey(User, related_name='friendship_followed')
