@@ -113,7 +113,6 @@ def unlike(request, pk):
     except YapModel.DoesNotExist:
         return Response(_j(message='Not found'), status=status.HTTP_404_NOT_FOUND)
 
-<<<<<<< HEAD
 # class Listening(RetrieveDestroyAPIView):
 #     authentication_classes = (
 #         SessionAuthentication, BasicAuthentication, OAuth2Authentication)
@@ -134,7 +133,6 @@ def unlike(request, pk):
 #     permission_classes = (IsAuthenticated,)
 #     queryset = LikingModel.objects.filter()
 #     serializer_class = LikingSerializer
-
 
 @api_view(['POST'])
 def friendships_create(request, followed_id):
@@ -195,7 +193,3 @@ def destroy_follower(request, follower_id):
 
     except (Friendship.DoesNotExist, User.DoesNotExist):
         return Response({'detail': 'Users Not Found'}, status=status.HTTP_404_NOT_FOUND)
-=======
-    queryset = LikingModel.objects.filter()
-    serializer_class = LikingSerializer
->>>>>>> a21664ad589b4d155f046d0f7c0478f12d3896ae
