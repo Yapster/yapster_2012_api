@@ -8,9 +8,9 @@
 
 PRODIR="/home/ec2-user/yapster_api/yapster"
 PRONAME="yapster"
-PIDFILE="/var/run/yapster.pid"
-SOCKFILE="/var/run/yapster.sock"
-LOGFILE="/home/ec2-user/yapster_api/yapster/uwsgi.yapster.log"
+PIDFILE="/home/ec2-user/yapster_api/run/yapster.pid"
+SOCKFILE="/home/ec2-user/yapster_api/run/yapster.sock"
+LOGFILE="/home/ec2-user/yapster_api/run/uwsgi.yapster.log"
 MODULE="yapster.wsgi:application"
 
 case "$1" in
