@@ -11,7 +11,7 @@ from registration.backends.default.views import \
 from registration.backends.default.views import \
     ActivationView as NormalActivationView
 
-from yapster import Response
+from yapster.utils import Response
 
 
 class PostAPIView(generics.CreateAPIView):

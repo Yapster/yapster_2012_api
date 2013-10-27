@@ -9,7 +9,7 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework.authentication import OAuth2Authentication
 from rest_framework.permissions import IsAuthenticated
 
-from yapster import Response
+from yapster.utils import Response
 from users.models import Info as UserInfoModel
 from users.models import Setting as UserSettingModel
 from users.serializers import UserInfoSerializer

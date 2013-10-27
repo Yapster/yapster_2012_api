@@ -8,7 +8,7 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.authentication import OAuth2Authentication
 
-from yapster import Response
+from yapster.utils import Response
 from yap.models import Yap as YapModel
 from yap.serializers import CreateYapSerializer
 from yap.serializers import YapSerializer
