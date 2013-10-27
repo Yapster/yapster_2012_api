@@ -18,7 +18,7 @@ case "$1" in
         echo -n "Starting yapster"
         uwsgi --processes 2 --max-requests 10000 --master --pythonpath $PRODIR\
               --chdir $PRODIR --daemonize $LOGFILE --module $MODULE\
-              --socket $SOCKFILE --pidfile $PIDFILE
+              --socket $SOCKFILE --pidfile $PIDFILE --uid ec2-user
         echo "."
         ;;
   stop)
