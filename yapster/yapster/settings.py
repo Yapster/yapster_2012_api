@@ -173,14 +173,14 @@ LOGGING = {
 
 # auth settings
 AUTH_USER_MODEL = 'auth.User'
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
+                           'registration.backends.default.EmailAuthBackend',)
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.OAuth2Authentication',
     )
 }
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
-                           'registration.backends.default.EmailAuthBackend',)
 ACCOUNT_ACTIVATION_DAYS = 7
 
 # redis queue setting
