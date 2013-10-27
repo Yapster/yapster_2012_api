@@ -1,0 +1,394 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"reyap",
+				"reyap_user"
+			],
+			[
+				"need_per",
+				"need_permission_to_listen"
+			],
+			[
+				"avar",
+				"avatar_path"
+			],
+			[
+				"last",
+				"last_name"
+			],
+			[
+				"fir",
+				"first_name"
+			],
+			[
+				"remove",
+				"remove_follower"
+			],
+			[
+				"is",
+				"is_confirm	(attribute, instance)"
+			],
+			[
+				"Fre",
+				"FriendshipManager	(global, class)"
+			],
+			[
+				"Feed",
+				"FeedManager"
+			],
+			[
+				"Yap",
+				"YapModel	(imported, class)"
+			],
+			[
+				"se",
+				"serializer	(local, instance)"
+			],
+			[
+				"Norma",
+				"NormalRegistrationView"
+			],
+			[
+				"Norm",
+				"NormalActivationView"
+			],
+			[
+				"db",
+				"dbpath"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "yapster/yap/signals.py",
+			"settings":
+			{
+				"buffer_size": 234,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "yapster/yap/models.py",
+			"settings":
+			{
+				"buffer_size": 3874,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "yapster/registration/backends/default/views.py",
+			"settings":
+			{
+				"buffer_size": 5265,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 67.0,
+		"selected_items":
+		[
+			[
+				"js",
+				"Format: Javascript"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"format",
+				"User: Python PEP8 Autoformat"
+			],
+			[
+				"pep8",
+				"User: Python PEP8 Autoformat"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"",
+				"About"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), 'wb').write(urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ','%20')).read())"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/zhouxin/projects/yapster_api/yapster/feed/models.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/registration/signals.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/yap/serializers.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/yap/models.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/users/models.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/yapster/settings.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/initial_data.json",
+		"/Users/zhouxin/projects/yapster_api/yapster/users/views_api.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/users/serializers.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/users/urls_api.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/feed/tests.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/registration/backends/default/views_api.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/yap/urls_api.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/yap/signals.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/yap/views_api.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/rest_framework/serializers.py",
+		"/Users/zhouxin/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/zhouxin/Library/Application Support/Sublime Text 3/Packages/User/pep8_autoformat.sublime-settings",
+		"/Users/zhouxin/django15/lib/python2.7/site-packages/django/contrib/auth/models.py",
+		"/Users/zhouxin/projects/yapster_api/yapster.sublime-project",
+		"/Users/zhouxin/Library/Application Support/Sublime Text 3/Packages/User/SublimeCodeIntel.sublime-settings",
+		"/Users/zhouxin/projects/yapster_api/yapster/yap/views.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/yapster/urls.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/yapster/__init__.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/users/views.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/yapster/views.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/users/tests.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/yapster/models.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/yapster/urls_api.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/yapster/views_api.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/rest_framework/response.py",
+		"/Users/zhouxin/projects/yapster_api/yapster/yapster/settings_local.py",
+		"/Users/zhouxin/Library/Application Support/Sublime Text 3/Packages/SideBarEnhancements/CHANGELOG",
+		"/Users/zhouxin/nodejs/specl/api/package.json"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"Reyap",
+			"followeds",
+			"user",
+			"followeds",
+			"is_active",
+			"is_confirm",
+			"is_active",
+			"context",
+			"request",
+			"save_object",
+			"ReYap",
+			"user_registered",
+			"from rest_framework import Response",
+			"UserInfo",
+			"UserINfo",
+			"UserInfo",
+			"active_flag"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "yapster/yap/signals.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 234,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								37,
+								48
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "yapster/yap/models.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3874,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1113,
+								1113
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 5.0,
+						"translation.y": 1201.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "yapster/registration/backends/default/views.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5265,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								163,
+								130
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"project": "yapster.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+		],
+		"width": 728.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 191.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

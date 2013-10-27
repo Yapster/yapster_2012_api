@@ -1,0 +1,12 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "yapster"
+		}
+	],
+    "settings": {
+        "python_interpreter": "/Users/zhouxin/django15/bin/python"
+    }
+}

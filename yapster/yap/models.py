@@ -1,9 +1,8 @@
-# coding:utf8
-import datetime
-
+# coding=utf-8
 from django.db import models
 from django.contrib.auth.models import User
-# from taggit.managers import TaggableManager
+
+from yap import signals
 
 
 class Tag(models.Model):
@@ -28,52 +27,69 @@ class Yap(models.Model):
 
     dateline = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        super(Yap, self).save(*args, **kwargs)
+        signals.yap_created.send(sender=self.__class__,
+                                 yap=self)
+
+    def delete(self):
+        self.is_active = False
+        self.save()
+        signals.yap_deleted.send(sender=self.__class__,
+                                 yap=self)
+
     def add_tags(self, tag_str):
         tags = tag_str.split(',')
         for tag in tags:
             t = Tag.objects.get_or_create(tagname=tag)
             self.tags.add(t[0])
 
-    def delete(self):
-        self.is_active = False
-        self.save()
-
     def listenedby(self, user):
         obj = Listen()
         obj.yap = self
-        obj.listen_user = user
+        obj.user = user
         obj.save()
         self.listen_count += 1
         self.save()
         return obj
 
     def reyapedby(self, user):
-        obj = ReYap.objects.get_or_create(yap=self, reyap_user=user)
-        if not obj[1]:
+        obj = Reyap.objects.get_or_create(yap=self, user=user)
+        if not obj[1] and not obj[0].is_active:
             obj[0].is_active = True
             obj[0].save()
-        self.reyap_count += 1
-        self.save()
-        return obj
+            self.reyap_count += 1
+            self.save()
+        elif obj[1]:
+            self.reyap_count += 1
+            self.save()
+        else:
+            return None
+        return obj[0]
 
     def unreyapedby(self, user):
-        obj = ReYap.objects.get(yap=self, reyap_user=user)
+        obj = Reyap.objects.get(yap=self, user=user)
         obj.delete()
         self.reyap_count -= 1
         self.save()
         return obj
 
     def likedby(self, user):
-        obj = Like.objects.get_or_create(yap=self, like_user=user)
-        if not obj[1]:
+        obj = Like.objects.get_or_create(yap=self, user=user)
+        if not obj[1] and not obj[0].is_active:
             obj[0].is_active = True
             obj[0].save()
-        self.like_count += 1
-        self.save()
-        return obj
+            self.like_count += 1
+            self.save()
+        elif obj[1]:
+            self.like_count += 1
+            self.save()
+        else:
+            return None
+        return obj[0]
 
     def unlikedby(self, user):
-        obj = Like.objects.get(yap=self, like_user=user)
+        obj = Like.objects.get(yap=self, user=user)
         obj.delete()
         self.like_count -= 1
         self.save()
@@ -81,73 +97,35 @@ class Yap(models.Model):
 
 
 class Listen(models.Model):
-    yap = models.ForeignKey(Yap, related_name='listening')
-    listen_user = models.ForeignKey(User, related_name='listening')
+    yap = models.ForeignKey(Yap, related_name='listens')
+    user = models.ForeignKey(User, related_name='listens')
     dateline = models.DateTimeField(auto_now_add=True)
 
 
 class Reyap(models.Model):
-    yap = models.ForeignKey(Yap, related_name='reyapping')
-    reyap_user = models.ForeignKey(User, related_name='reyapping')
+    yap = models.ForeignKey(Yap, related_name='reyaps')
+    user = models.ForeignKey(User, related_name='reyaps')
     is_active = models.BooleanField(default=True)
     dateline = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        super(Reyap, self).save(*args, **kwargs)
+        signals.reyap_created.send(sender=self.__class__,
+                                   reyap=self)
 
     def delete(self):
         self.is_active = False
         self.save()
+        signals.reyap_deleted.send(sender=self.__class__,
+                                   reyap=self)
 
 
 class Like(models.Model):
-    yap = models.ForeignKey(Yap, related_name='liking')
-    like_user = models.ForeignKey(User, related_name='liking')
+    yap = models.ForeignKey(Yap, related_name='likes')
+    user = models.ForeignKey(User, related_name='likes')
     is_active = models.BooleanField(default=True)
     dateline = models.DateTimeField(auto_now_add=True)
 
     def delete(self):
         self.is_active = False
         self.save()
-
-
-
-class FriendshipManager(models.Manager):
-    def create():
-        pass
-
-    def destroy():
-        pass
-        
-
-class Friendship(models.Model):
-    followed = models.ForeignKey(User, related_name='friendship_followed')
-    follower = models.ForeignKey(User, related_name='firendship_follower')
-    dateline = models.DateTimeField(auto_now_add=True)
-
-    @classmethod
-    def create_friendship(cls, follower, followed_id):
-        followed = User.objects.get(pk=followed_id)
-        obj = cls.objects.get_or_create(followed=followed, follower=follower)
-        return obj[1]
-
-    @classmethod
-    def follower_list(cls, followed_id):
-        objs = cls.objects.filter(followed=followed_id)
-
-        # temporary test
-        followers_id = []
-        for obj in objs:
-            followers_id.append(obj.follower_id)
-        return followers_id
-
-    @classmethod
-    def destroy_friendship(cls, follower, followed_id):
-        followed = User.objects.get(pk=followed_id)
-        obj = cls.objects.get(followed=followed, follower=follower)
-        obj.delete()
-        return True
-
-    @classmethod
-    def destroy_follower(cls, followed, follower_id):
-        follower = User.objects.get(pk=follower_id)
-        obj = cls.objects.get(followed=followed, follower=follower)
-        obj.delete()
-        return True

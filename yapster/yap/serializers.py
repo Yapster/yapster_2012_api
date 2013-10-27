@@ -1,9 +1,9 @@
 # coding:utf8
 from rest_framework import serializers
 from yap.models import Yap
-from yap.models import Listening
-from yap.models import ReYapping
-from yap.models import Liking
+# from yap.models import Listen
+# from yap.models import Reyap
+# from yap.models import Like
 
 
 class CreateYapSerializer(serializers.ModelSerializer):
@@ -11,30 +11,32 @@ class CreateYapSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Yap
-        fields = ('title', 'path', 'length', 'tagstr')
+        fields = ('id', 'title', 'path', 'length', 'tagstr')
 
 
 class YapSerializer(serializers.ModelSerializer):
-    listening = serializers.RelatedField(many=True)
-    reyapping = serializers.RelatedField(many=True)
-    liking = serializers.RelatedField(many=True)
+    listens = serializers.RelatedField(many=True)
+    reyaps = serializers.RelatedField(many=True)
+    likes = serializers.RelatedField(many=True)
 
     class Meta:
         model = Yap
         exclude = ('user', )
 
 
-class ListeningSerializer(serializers.ModelSerializer):
+# class ListeningSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = Listening
+#     class Meta:
+#         model = Listen
 
-class ReYappingSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = ReYapping
+# class ReYappingSerializer(serializers.ModelSerializer):
 
-class LikingSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Reyap
 
-    class Meta:
-        model = Liking
+
+# class LikingSerializer(serializers.ModelSerializer):
+
+#     class Meta:
+#         model = Like

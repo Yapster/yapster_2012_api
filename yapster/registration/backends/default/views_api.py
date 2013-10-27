@@ -1,26 +1,17 @@
-#coding=utf-8
-import hashlib
-
-from django.conf import settings
-from django.contrib.sites.models import RequestSite
-from django.contrib.sites.models import Site
+# coding=utf-8
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
-from registration import signals
-from registration.models import RegistrationProfile
-from registration.backends.default.views import RegistrationView as NormalRegistrationView
-from registration.backends.default.views import ActivationView as NormalActivationView
-
-from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import serializers
 from rest_framework import status
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
 
-from yapster.models import UserInfo
-from yapster.models import UserSetting
+from registration.backends.default.views import \
+    RegistrationView as NormalRegistrationView
+from registration.backends.default.views import \
+    ActivationView as NormalActivationView
+
+from yapster import Response
 
 
 class PostAPIView(generics.CreateAPIView):
@@ -31,15 +22,15 @@ class PostAPIView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(
-            data=request.DATA, files=request.FILES)
+            data=request.DATA)
 
         if serializer.is_valid():
-            result = self.action(request, **serializer.data)
-            headers = self.get_success_headers(serializer.data)
-            return Response({'success': True, 'message': None},
-                            status=status.HTTP_201_CREATED,
-                            headers=headers)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            self.action(request, **serializer.data)
+            return Response()
+        return Response(
+            success=False,
+            content=serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST)
 
 
 class RegistrationSerializer(serializers.Serializer):
@@ -62,30 +53,18 @@ class RegistrationSerializer(serializers.Serializer):
         value = attrs[source]
         if User.objects.filter(email__iexact=value):
             raise serializers.ValidationError(
-                _("This email address is already in use. Please supply a different email address."))
+                _("This email address is already in use."))
         return attrs
 
 
 class RegistrationView(PostAPIView):
     serializer_class = RegistrationSerializer
 
-    def init_user(self, user):
-        u = UserInfo()
-        u.user = new_user
-        u.email = new_user.email
-        u.save()
-
-        u = UserSetting()
-        u.user = new_user
-        u.save()
-        return True
-
     def action(self, request, **cleaned_data):
+        _n = NormalRegistrationView()
         new_user = _n.register(request, **cleaned_data)
-        if self.init_user(new_user):
-            return new_user
-        else:
-            return None
+        return new_user
+
 
 class ActivationSerializer(serializers.Serializer):
     activation_key = serializers.CharField(required=True)

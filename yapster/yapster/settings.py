@@ -114,18 +114,21 @@ WSGI_APPLICATION = 'yapster.wsgi.application'
 
 TEMPLATE_DIRS = (
     os.path.join(ROOT_DIR, 'templates'),
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
 
 INSTALLED_APPS = (
-    'yapster',
+    'south',
     'provider',
     'provider.oauth2',
-    'registration',
     'rest_framework',
+    'registration',
+    'users',
+    'yapster',
     'yap',
+    'feed',
+    'django_rq',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -171,15 +174,22 @@ LOGGING = {
 # auth settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.OAuth2Authentication',
     )
 }
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', 
-    'registration.backends.default.EmailAuthBackend',)
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
+                           'registration.backends.default.EmailAuthBackend',)
 ACCOUNT_ACTIVATION_DAYS = 7
 
+# redis queue setting
+RQ_QUEUES = {
+    'default': {
+        'HOST': '10.239.35.15',
+        'PORT': 6379,
+        'DB': 0,
+    }
+}
 
 # mail settings
 EMAIL_HOST = 'smtp.gmail.com'
