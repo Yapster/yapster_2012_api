@@ -6,8 +6,6 @@ from users.models import Setting as UserSetting
 
 class UserInfoSerializer(serializers.ModelSerializer):
     user = serializers.RelatedField()
-    followers = serializers.RelatedField()
-    followeds = serializers.RelatedField()
 
     class Meta:
         model = UserInfo

@@ -16,6 +16,6 @@ urlpatterns = patterns('',
     # oauth2 for client. (ios app)
     url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
     # url(r'^accounts/', include('registration.backends.default.urls')),
-    url(r'^admin/', include(admin.site.urls)),
     url(r'^django-rq/', include('django_rq.urls')),
+    url(r'^admin/', include(admin.site.urls)),
 )
