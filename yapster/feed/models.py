@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 from django_rq import enqueue
 from yap.models import Yap
+from yap.serializers import YapSerializer
 from yap.signals import yap_created
 from yap.signals import reyap_created
 from yap.signals import yap_deleted
@@ -20,7 +21,8 @@ class FeedManager(models.Manager):
             Feed(
                 user=followership.follower,
                 yap=yap,
-                yap_user=yap.user
+                yap_user=yap.user,
+                dateline=yap.dateline
             ).save()
 
     def create_by_reyap(self, reyap):
@@ -31,7 +33,8 @@ class FeedManager(models.Manager):
                 user=followership.follower,
                 yap=reyap.yap,
                 yap_user=reyap.yap.user,
-                reyap_user=reyap.user
+                reyap_user=reyap.user,
+                dateline=reyap.dateline
             ).save()
 
     def delete_by_yap(self, yap):
@@ -64,6 +67,24 @@ class Feed(models.Model):
         self.is_show = False
         self.save()
 
+    def serialized_yap(self):
+        y = YapSerializer(instance=self.yap)
+        return y.data
+
+    def serialized_user(self):
+        u = UserInfoSerializer(instance=self.user.info)
+        return u.data
+
+    def serialized_yap_user(self):
+        u = UserInfoSerializer(instance=self.yap_user.info)
+        return u.data
+
+    def serialized_reyap_user(self):
+        if self.reyap_user:
+            u = UserInfoSerializer(instance=self.reyap_user.info)
+            return u.data
+        return None
+
 
 @receiver(yap_created)
 def yap_create_feed(sender, **kwargs):
@@ -87,3 +108,6 @@ def reyap_create_feed(sender, **kwargs):
 def reyap_delete_feed(sender, **kwargs):
     reyap = kwargs.get('reyap', None)
     enqueue(Feed.objects.delete_by_reyap, reyap)
+
+
+from users.serializers import UserInfoSerializer

@@ -15,13 +15,11 @@ class CreateYapSerializer(serializers.ModelSerializer):
 
 
 class YapSerializer(serializers.ModelSerializer):
-    listens = serializers.RelatedField(many=True)
-    reyaps = serializers.RelatedField(many=True)
-    likes = serializers.RelatedField(many=True)
+    tagstr = serializers.RelatedField()
 
     class Meta:
         model = Yap
-        exclude = ('user', )
+        exclude = ('user', 'tags')
 
 
 # class ListeningSerializer(serializers.ModelSerializer):

@@ -28,16 +28,14 @@ class CreateYap(CreateAPIView):
         y = YapModel()
         y.user = request.user
         serializer = self.get_serializer(
-            data=request.DATA, files=request.FILES, instance=y)
+            data=request.DATA, instance=y)
 
         if serializer.is_valid():
             serializer.save()
-            # add tags
-            y.add_tags(serializer.data.get('tagstr'))
-            headers = self.get_success_headers(serializer.data)
+            y.add_tags(request.POST.get('tagstr', ''))
+            # headers = self.get_success_headers(serializer.data)
             return Response(content=serializer.data,
-                            status=status.HTTP_201_CREATED,
-                            headers=headers)
+                            status=status.HTTP_201_CREATED)
         return Response(success=False, content=serializer.errors,
                         status=status.HTTP_400_BAD_REQUEST)
 

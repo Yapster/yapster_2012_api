@@ -18,6 +18,10 @@ class Info(models.Model):
     background_path = models.CharField(
         _('background path'), max_length=255, blank=True)
 
+    # def serialized_user(self):
+    #     u = UserSerializer(instance=self.user)
+    #     return u.data
+
     def followers(self):
         objs = self.user.followerships.filter(
             is_active=True, is_confirm=True)
@@ -142,3 +146,6 @@ class Friendship(models.Model):
         '''followed and follower user both have permission'''
         self.is_active = False
         self.save()
+
+
+# from users.serializers import UserSerializer

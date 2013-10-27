@@ -18,6 +18,9 @@ class SelfFeed(ListAPIView):
     serializer_class = FeedSerializer
 
     def get_queryset(self):
-        return Feed.objects.filter(user=self.request.user,
-                                   is_active=True,
-                                   is_show=True)
+        fs = Feed.objects.filter(user=self.request.user,
+                                 is_active=True,
+                                 is_show=True).order_by('-dateline')
+        if self.request.GET.get('pk'):
+            fs = fs.filter(pk__gt=self.request.GET.get('pk'))
+        return fs

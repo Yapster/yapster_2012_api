@@ -44,6 +44,9 @@ class Yap(models.Model):
             t = Tag.objects.get_or_create(tagname=tag)
             self.tags.add(t[0])
 
+    def tagstr(self):
+        return ','.join([tag.tagname for tag in self.tags.filter()])
+
     def listenedby(self, user):
         obj = Listen()
         obj.yap = self

@@ -4,11 +4,11 @@ from feed.models import Feed
 
 
 class FeedSerializer(serializers.ModelSerializer):
-    user = serializers.RelatedField()
-    yap = serializers.RelatedField()
-    yap_user = serializers.RelatedField()
-    reyap_user = serializers.RelatedField()
+    serialized_yap = serializers.RelatedField()
+    # serialized_user = serializers.RelatedField()
+    serialized_yap_user = serializers.RelatedField()
+    serialized_reyap_user = serializers.RelatedField()
 
     class Meta:
         model = Feed
-        exclude = ('user', )
+        exclude = ('user', 'yap', 'yap_user', 'reyap_user',)
