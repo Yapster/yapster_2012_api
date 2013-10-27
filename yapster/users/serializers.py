@@ -5,7 +5,7 @@ from users.models import Setting as UserSetting
 
 
 class UserInfoSerializer(serializers.ModelSerializer):
-    user = serializers.RelatedField()
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = UserInfo
