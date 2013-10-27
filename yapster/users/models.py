@@ -55,7 +55,12 @@ class Info(models.Model):
                 obj[0].save()
             return 'Success'
         else:
-            return 'Already Exist'
+            if not obj[0].is_active:
+                obj[0].is_active = True
+                obj[0].save()
+                return 'Success'
+            else:
+                return 'Already Exist'
 
     def confirm(self, follower_id):
         try:
