@@ -172,6 +172,7 @@ LOGGING = {
 }
 
 # auth settings
+AUTH_USER_MODEL = 'auth.User'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
