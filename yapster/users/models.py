@@ -18,9 +18,9 @@ class Info(models.Model):
     background_path = models.CharField(
         _('background path'), max_length=255, blank=True)
 
-    # def serialized_user(self):
-    #     u = UserSerializer(instance=self.user)
-    #     return u.data
+    def serialized_user(self):
+        u = UserSerializer(instance=self.user)
+        return u.data
 
     def followers(self):
         objs = self.user.followerships.filter(
@@ -107,6 +107,13 @@ def user_create_info(sender, **kwargs):
             background_path=''
         )
         info.save()
+    else:
+        i = kwargs.get('instance')
+        info = Info.objects.get(user=i)
+        info.first_name = i.first_name
+        info.last_name = i.last_name
+        info.email = i.email
+        info.save()
 
 
 class Setting(models.Model):
@@ -148,4 +155,4 @@ class Friendship(models.Model):
         self.save()
 
 
-# from users.serializers import UserSerializer
+from users.serializers import UserSerializer

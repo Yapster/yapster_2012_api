@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.decorators import permission_classes
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.generics import ListAPIView
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.authentication import OAuth2Authentication
@@ -14,6 +15,15 @@ from users.models import Info as UserInfoModel
 from users.models import Setting as UserSettingModel
 from users.serializers import UserInfoSerializer
 from users.serializers import UserSettingSerializer
+
+
+class InfoList(ListAPIView):
+    queryset = UserInfoModel.objects.filter(user__is_active=True)
+    serializer_class = UserInfoSerializer
+
+    paginate_by = 25
+    paginate_by_param = 'page_size'
+    max_paginate_by = 100
 
 
 class SelfInfo(RetrieveUpdateAPIView):

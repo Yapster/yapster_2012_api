@@ -6,8 +6,10 @@ from users.views_api import SelfInfo
 from users.views_api import SelfSetting
 from users.views_api import UserInfo
 from users.views_api import UserSetting
+from users.views_api import InfoList
 
 urlpatterns = patterns('users.views_api',
+                       url(r'^userlist/$', InfoList.as_view()),
                        url(r'^userinfo/$', SelfInfo.as_view()),
                        url(r'^usersetting/$', SelfSetting.as_view()),
                        url(r'^userinfo/(?P<pk>\d+)/$', UserInfo.as_view()),

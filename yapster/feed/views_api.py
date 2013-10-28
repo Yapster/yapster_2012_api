@@ -16,6 +16,10 @@ class SelfFeed(ListAPIView):
 
     queryset = Feed.objects.filter()
     serializer_class = FeedSerializer
+    
+    paginate_by = 10
+    paginate_by_param = 'page_size'
+    max_paginate_by = 100
 
     def get_queryset(self):
         fs = Feed.objects.filter(user=self.request.user,
