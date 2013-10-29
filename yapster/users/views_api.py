@@ -80,14 +80,18 @@ def listen(request, pk):
     result = request.user.info.follow(pk)
 
     http_status = status.HTTP_201_CREATED
+    success = True
     if result == 'Cannot Follow Yourself':
+        success = False
         http_status = status.HTTP_501_NOT_IMPLEMENTED
     elif result == 'Already Exist':
+        success = False
         http_status = status.HTTP_304_NOT_MODIFIED
     elif result == 'User DoesNotExist':
+        success = False
         http_status = status.HTTP_404_NOT_FOUND
 
-    return Response(message=result, status=http_status)
+    return Response(success=success, message=result, status=http_status)
 
 
 @api_view(['POST'])
