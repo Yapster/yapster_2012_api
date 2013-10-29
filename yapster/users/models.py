@@ -144,6 +144,9 @@ class Friendship(models.Model):
     is_active = models.BooleanField(default=True)
     active_dateline = models.DateTimeField(blank=True, null=True)
 
+    class Meta:
+        unique_together = ('followed', 'follower')
+
     def confirm(self):
         '''only followed user has permission'''
         self.is_confirm = True
