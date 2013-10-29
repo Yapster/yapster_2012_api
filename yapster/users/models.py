@@ -147,6 +147,9 @@ class Friendship(models.Model):
     class Meta:
         unique_together = ('followed', 'follower')
 
+    def __unicode__(self):
+        return "%s listen to %s" % (self.follower, self.followed)
+
     def confirm(self):
         '''only followed user has permission'''
         self.is_confirm = True
