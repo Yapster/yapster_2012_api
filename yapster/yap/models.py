@@ -27,6 +27,9 @@ class Yap(models.Model):
 
     dateline = models.DateTimeField(auto_now_add=True)
 
+    def __unicode__(self):
+        return self.title
+
     def save(self, *args, **kwargs):
         super(Yap, self).save(*args, **kwargs)
         signals.yap_created.send(sender=self.__class__,
