@@ -18,30 +18,63 @@ class FeedManager(models.Manager):
         followerships = yap.user.followerships.filter(
             is_active=True, is_confirm=True)
         for followership in followerships:
-            Feed(
+            f = Feed.objects.get_or_create(
                 user=followership.follower,
                 yap=yap,
                 yap_user=yap.user,
+                reyap_user=None,
                 dateline=yap.dateline
-            ).save()
+            )
+            if not f[1] and not f[0].is_active:
+                f[0].is_active = True
+                f[0].save()
+        # for activities
+        f = Feed.objects.get_or_create(
+            user=yap.user,
+            yap=yap,
+            yap_user=yap.user,
+            reyap_user=None,
+            dateline=yap.dateline
+        )
+        if not f[1] and not f[0].is_active:
+            f[0].is_active = True
+            f[0].save()
 
     def create_by_reyap(self, reyap):
         followerships = reyap.user.followerships.filter(
             is_active=True, is_confirm=True)
         for followership in followerships:
-            Feed(
+            f = Feed.objects.get_or_create(
                 user=followership.follower,
                 yap=reyap.yap,
                 yap_user=reyap.yap.user,
                 reyap_user=reyap.user,
-                dateline=reyap.dateline
-            ).save()
+            )
+            if not f[1]:
+                f[0].dateline = reyap.dateline
+                if not f[0].is_active:
+                    f[0].is_active = True
+                f[0].save()
+
+        # for activities
+        f = Feed.objects.get_or_create(
+            user=reyap.user,
+            yap=reyap.yap,
+            yap_user=reyap.yap.user,
+            reyap_user=reyap.user
+        )
+        if not f[1]:
+            f[0].dateline = reyap.dateline
+            if not f[0].is_active:
+                f[0].is_active = True
+            f[0].save()
 
     def delete_by_yap(self, yap):
         self.filter(yap=yap).update(is_active=False)
 
     def delete_by_reyap(self, reyap):
-        self.filter(reyap=reyap).update(is_active=False)
+        self.filter(reyap_user=reyap.user, yap=reyap.yap).update(
+            is_active=False)
 
 
 class Feed(models.Model):
@@ -58,6 +91,9 @@ class Feed(models.Model):
     is_show = models.BooleanField(default=True)
 
     objects = FeedManager()
+
+    class Meta:
+        unique_together = ('user', 'yap', 'yap_user', 'reyap_user')
 
     def delete(self):
         self.is_active = False
@@ -101,7 +137,7 @@ def yap_delete_feed(sender, **kwargs):
 @receiver(reyap_created)
 def reyap_create_feed(sender, **kwargs):
     reyap = kwargs.get('reyap', None)
-    enqueue(Feed.objects.create_by_yap, reyap)
+    enqueue(Feed.objects.create_by_reyap, reyap)
 
 
 @receiver(reyap_deleted)

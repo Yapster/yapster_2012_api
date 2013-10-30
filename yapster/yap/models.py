@@ -31,15 +31,34 @@ class Yap(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
+        is_created = False
+        if not self.pk:
+            is_created = True
         super(Yap, self).save(*args, **kwargs)
-        signals.yap_created.send(sender=self.__class__,
-                                 yap=self)
+        if is_created:
+            signals.yap_created.send(sender=self.__class__,
+                                     yap=self)
+        return True
+
+    def activate(self):
+        if not self.is_active:
+            self.is_active = True
+            self.save()
+            signals.yap_created.send(sender=self.__class__,
+                                     yap=self)
+            return True
+        else:
+            return False
 
     def delete(self):
-        self.is_active = False
-        self.save()
-        signals.yap_deleted.send(sender=self.__class__,
-                                 yap=self)
+        if self.is_active:
+            self.is_active = False
+            self.save()
+            signals.yap_deleted.send(sender=self.__class__,
+                                     yap=self)
+            return True
+        else:
+            return False
 
     def add_tags(self, tag_str):
         tags = tag_str.split(',')
@@ -50,33 +69,23 @@ class Yap(models.Model):
     def tagstr(self):
         return ','.join([tag.tagname for tag in self.tags.filter()])
 
+    def reyapedby(self, user):
+        obj = Reyap.objects.get_or_create(yap=self, user=user)
+        if not obj[1]:
+            obj[0].activate()
+        return obj[0]
+
+    def unreyapedby(self, user):
+        obj = Reyap.objects.get(yap=self, user=user)
+        obj.delete()
+        return True
+
     def listenedby(self, user):
         obj = Listen()
         obj.yap = self
         obj.user = user
         obj.save()
         self.listen_count += 1
-        self.save()
-        return obj
-
-    def reyapedby(self, user):
-        obj = Reyap.objects.get_or_create(yap=self, user=user)
-        if not obj[1] and not obj[0].is_active:
-            obj[0].is_active = True
-            obj[0].save()
-            self.reyap_count += 1
-            self.save()
-        elif obj[1]:
-            self.reyap_count += 1
-            self.save()
-        else:
-            return None
-        return obj[0]
-
-    def unreyapedby(self, user):
-        obj = Reyap.objects.get(yap=self, user=user)
-        obj.delete()
-        self.reyap_count -= 1
         self.save()
         return obj
 
@@ -115,15 +124,43 @@ class Reyap(models.Model):
     dateline = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
+        is_created = False
+        if not self.pk:
+            is_created = True
         super(Reyap, self).save(*args, **kwargs)
-        signals.reyap_created.send(sender=self.__class__,
-                                   reyap=self)
+
+        if is_created:
+            self.yap.reyap_count += 1
+            self.yap.save()
+            signals.reyap_created.send(sender=self.__class__,
+                                       reyap=self)
+        return True
+
+    def activate(self):
+        if not self.is_active:
+            self.is_active = True
+            self.save()
+
+            self.yap.reyap_count += 1
+            self.yap.save()
+            signals.reyap_created.send(sender=self.__class__,
+                                       reyap=self)
+            return True
+        else:
+            return False
 
     def delete(self):
-        self.is_active = False
-        self.save()
-        signals.reyap_deleted.send(sender=self.__class__,
-                                   reyap=self)
+        if self.is_active:
+            self.is_active = False
+            self.save()
+
+            self.yap.reyap_count -= 1
+            self.yap.save()
+            signals.reyap_deleted.send(sender=self.__class__,
+                                       reyap=self)
+            return True
+        else:
+            return False
 
 
 class Like(models.Model):

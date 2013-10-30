@@ -60,7 +60,8 @@ def listen(request, pk):
         yap.listenedby(request.user)
         return Response(status=status.HTTP_201_CREATED)
     except YapModel.DoesNotExist:
-        return Response(message='Not found', status=status.HTTP_404_NOT_FOUND)
+        return Response(success=False,
+                        message='Not found', status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['POST'])
@@ -70,7 +71,8 @@ def reyap(request, pk):
         yap.reyapedby(request.user)
         return Response(status=status.HTTP_201_CREATED)
     except YapModel.DoesNotExist:
-        return Response(message='Not found', status=status.HTTP_404_NOT_FOUND)
+        return Response(success=False,
+                        message='Not found', status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['POST'])
@@ -80,7 +82,8 @@ def unreyap(request, pk):
         yap.unreyapedby(request.user)
         return Response(status=status.HTTP_201_CREATED)
     except YapModel.DoesNotExist:
-        return Response(message='Not found', status=status.HTTP_404_NOT_FOUND)
+        return Response(success=False,
+                        message='Not found', status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['POST'])
@@ -90,7 +93,8 @@ def like(request, pk):
         yap.likedby(request.user)
         return Response(status=status.HTTP_201_CREATED)
     except YapModel.DoesNotExist:
-        return Response(message='Not found', status=status.HTTP_404_NOT_FOUND)
+        return Response(success=False,
+                        message='Not found', status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['POST'])
@@ -100,7 +104,9 @@ def unlike(request, pk):
         yap.unlikedby(request.user)
         return Response(status=status.HTTP_201_CREATED)
     except YapModel.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(success=False,
+                        message='Not found',
+                        status=status.HTTP_404_NOT_FOUND)
 
 # class Listening(RetrieveDestroyAPIView):
 #     authentication_classes = (
