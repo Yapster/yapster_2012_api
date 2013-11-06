@@ -38,6 +38,13 @@ class APITest(TestCase):
         }
 
     def test_yap(self):
-        response = self.c.get('/api/.1/yap/',
-                              content_type='application/json',
-                              **self.auth_headers)
+        data = {
+            "title": "123",
+            "path": "123",
+            "length": "123",
+            "tagstr": "123"
+        }
+        r = self.c.post('/api/.1/yap/create/',
+                        data,
+                        **self.auth_headers)
+        self.assertEqual(r.status_code, 201, r.content)

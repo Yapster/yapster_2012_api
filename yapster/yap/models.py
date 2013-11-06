@@ -91,23 +91,13 @@ class Yap(models.Model):
 
     def likedby(self, user):
         obj = Like.objects.get_or_create(yap=self, user=user)
-        if not obj[1] and not obj[0].is_active:
-            obj[0].is_active = True
-            obj[0].save()
-            self.like_count += 1
-            self.save()
-        elif obj[1]:
-            self.like_count += 1
-            self.save()
-        else:
-            return None
+        if not obj[1]:
+            obj[0].activate()
         return obj[0]
 
     def unlikedby(self, user):
         obj = Like.objects.get(yap=self, user=user)
         obj.delete()
-        self.like_count -= 1
-        self.save()
         return True
 
 
@@ -169,6 +159,24 @@ class Like(models.Model):
     is_active = models.BooleanField(default=True)
     dateline = models.DateTimeField(auto_now_add=True)
 
+    def activate(self):
+        if not self.is_active:
+            self.is_active = True
+            self.save()
+
+            self.yap.like_count += 1
+            self.yap.save()
+            return True
+        else:
+            return False
+
     def delete(self):
-        self.is_active = False
-        self.save()
+        if self.is_active:
+            self.is_active = False
+            self.save()
+
+            self.yap.like_count -= 1
+            self.yap.save()
+            return True
+        else:
+            return False
