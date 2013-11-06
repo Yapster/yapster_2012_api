@@ -73,6 +73,7 @@ class Yap(models.Model):
         obj = Reyap.objects.get_or_create(yap=self, user=user)
         if not obj[1]:
             obj[0].activate()
+
         return obj[0]
 
     def unreyapedby(self, user):
@@ -158,6 +159,17 @@ class Like(models.Model):
     user = models.ForeignKey(User, related_name='likes')
     is_active = models.BooleanField(default=True)
     dateline = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        is_created = False
+        if not self.pk:
+            is_created = True
+        super(Like, self).save(*args, **kwargs)
+
+        if is_created:
+            self.yap.like_count += 1
+            self.yap.save()
+        return True
 
     def activate(self):
         if not self.is_active:
