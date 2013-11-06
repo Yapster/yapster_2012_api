@@ -186,7 +186,7 @@ ACCOUNT_ACTIVATION_DAYS = 7
 # redis queue setting
 RQ_QUEUES = {
     'default': {
-        'HOST': '10.239.35.15',
+        'HOST': '10.151.139.113',
         'PORT': 6379,
         'DB': 0,
     }

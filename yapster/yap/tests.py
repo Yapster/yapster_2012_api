@@ -48,3 +48,54 @@ class APITest(TestCase):
                         data,
                         **self.auth_headers)
         self.assertEqual(r.status_code, 201, r.content)
+
+    def test_reyap(self):
+        data = {
+            "title": "123",
+            "path": "123",
+            "length": "123",
+            "tagstr": "123"
+        }
+        r = self.c.post('/api/.1/yap/create/',
+                        data,
+                        **self.auth_headers)
+        self.assertEqual(r.status_code, 201, r.content)
+        a = '/api/.1/yap/reyap/%d/' % json.loads(r.content)['content']['id']
+        r = self.c.post(
+            a,
+            **self.auth_headers)
+        self.assertEqual(r.status_code, 201, r.content)
+
+    def test_like(self):
+        data = {
+            "title": "123",
+            "path": "123",
+            "length": "123",
+            "tagstr": "123"
+        }
+        r = self.c.post('/api/.1/yap/create/',
+                        data,
+                        **self.auth_headers)
+        self.assertEqual(r.status_code, 201, r.content)
+        a = '/api/.1/yap/like/%d/' % json.loads(r.content)['content']['id']
+        r = self.c.post(
+            a,
+            **self.auth_headers)
+        self.assertEqual(r.status_code, 201, r.content)
+
+    def test_listen(self):
+        data = {
+            "title": "123",
+            "path": "123",
+            "length": "123",
+            "tagstr": "123"
+        }
+        r = self.c.post('/api/.1/yap/create/',
+                        data,
+                        **self.auth_headers)
+        self.assertEqual(r.status_code, 201, r.content)
+        a = '/api/.1/yap/listen/%d/' % json.loads(r.content)['content']['id']
+        r = self.c.post(
+            a,
+            **self.auth_headers)
+        self.assertEqual(r.status_code, 201, r.content)

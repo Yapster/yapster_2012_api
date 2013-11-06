@@ -95,7 +95,7 @@ def unreyap(request, pk):
     try:
         yap = YapModel.objects.get(pk=pk)
         yap.unreyapedby(request.user)
-        return Response(status=status.HTTP_201_CREATED)
+        return Response(status=200)
     except YapModel.DoesNotExist:
         return Response(success=False,
                         message='Not found', status=status.HTTP_404_NOT_FOUND)
@@ -117,7 +117,7 @@ def unlike(request, pk):
     try:
         yap = YapModel.objects.get(pk=pk)
         yap.unlikedby(request.user)
-        return Response(status=status.HTTP_201_CREATED)
+        return Response(status=200)
     except YapModel.DoesNotExist:
         return Response(success=False,
                         message='Not found',
