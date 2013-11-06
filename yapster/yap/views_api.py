@@ -10,6 +10,8 @@ from rest_framework.authentication import OAuth2Authentication
 
 from yapster.utils import Response
 from yap.models import Yap as YapModel
+from yap.models import Like
+from yap.models import Reyap
 from yap.serializers import CreateYapSerializer
 from yap.serializers import YapSerializer
 # from yap.serializers import ListeningSerializer
@@ -47,6 +49,19 @@ class Yap(RetrieveUpdateDestroyAPIView):
 
     queryset = YapModel.objects.filter(is_active=True)
     serializer_class = YapSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj:
+            obj.is_liked = False
+            obj.is_reyapped = False
+            if Like.objects.filter(yap=obj, user=request.user, is_active=True):
+                obj.is_liked = True
+            if Reyap.objects.filter(yap=obj, user=request.user, is_active=True):
+                obj.is_reyapped = True
+            serializer = self.get_serializer(instance=obj)
+            return Response(content=serializer.data)
+        return Response(success=False, status=404)
 
     def pre_save(self, obj):
         # todo response 403 when update other user's YAP

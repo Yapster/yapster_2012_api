@@ -14,7 +14,6 @@ class UserSerializer(serializers.ModelSerializer):
                    'is_staff', 'groups', 'user_permissions',
                    'first_name', 'last_name', 'email',
                    )
-        # read_only_fields = ('user',)
 
 
 class UserInfoSerializer(serializers.ModelSerializer):

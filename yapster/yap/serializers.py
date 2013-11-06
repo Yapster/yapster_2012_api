@@ -16,25 +16,9 @@ class CreateYapSerializer(serializers.ModelSerializer):
 
 class YapSerializer(serializers.ModelSerializer):
     tagstr = serializers.RelatedField()
+    is_liked = serializers.BooleanField()
+    is_reyapped = serializers.BooleanField()
 
     class Meta:
         model = Yap
         exclude = ('user', 'tags')
-
-
-# class ListeningSerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = Listen
-
-
-# class ReYappingSerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = Reyap
-
-
-# class LikingSerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = Like
