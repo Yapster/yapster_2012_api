@@ -8,6 +8,7 @@ from rest_framework.authentication import OAuth2Authentication
 from rest_framework.permissions import IsAuthenticated
 
 from feed.models import Feed
+from yap.models import Like, Reyap
 from feed.serializers import FeedSerializer
 
 
@@ -29,6 +30,16 @@ class SelfFeed(ListAPIView):
                                  is_show=True).order_by('-dateline')
         if self.request.GET.get('pk'):
             fs = fs.filter(pk__gt=self.request.GET.get('pk'))
+
+        for f in fs:
+            f.yap.is_liked = False
+            f.yap.is_reyapped = False
+            if Like.objects.filter(yap=f.yap,
+                                   user=self.request.user, is_active=True):
+                f.yap.is_liked = True
+            if Reyap.objects.filter(yap=f.yap,
+                                    user=self.request.user, is_active=True):
+                f.yap.is_reyapped = True
         return fs
 
 
